@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="km">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Sophorn AI — AI ជាភាសាខ្មែរ។ Prompt Kling ឥតគិតថ្លៃ និងមេរៀន AI clone, workflow, Claude។">
+<meta property="og:title" content="Sophorn AI">
+<meta property="og:description" content="Prompt Kling ជាខ្មែរ ឥតគិតថ្លៃ + មេរៀន AI ពីវីដេអូទី ១–៤">
+<meta property="og:image" content="avatar.jpg">
+<link rel="icon" href="avatar.jpg">
+<title>Sophorn AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;700&family=Inter:wght@600;700;800&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+  /* Layout: one narrow column on a navy grid — profile, keyword switcher, then one section per video (newest first). Brand colours from style/frame.md. */
+  :root {
+    --ink: #0b1220; --ink-2: #121b2e; --ink-3: #1a2540;
+    --line: rgba(62,198,255,.16); --line-strong: rgba(62,198,255,.32);
+    --sky: #3ec6ff; --sky-deep: #1592c9; --sun: #ffd23f;
+    --text: #f5f8ff; --muted: #8a97b1; --glow: rgba(62,198,255,.35);
+    --kh: "Kantumruy Pro", "Noto Sans Khmer", "Khmer Sangam MN", sans-serif;
+    --lat: Inter, "Helvetica Neue", Arial, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box }
+  body {
+    margin: 0;
+    background:
+      radial-gradient(60rem 30rem at 50% -10rem, rgba(62,198,255,.13), transparent 70%),
+      linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 48px 48px,
+      linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0 / 48px 48px,
+      var(--ink);
+    background-attachment: fixed;
+    color: var(--text);
+    font: 500 16px/1.7 var(--kh);
+  }
+  .wrap {
+    max-width: 680px; margin: 0 auto;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 28px 56px;
+    display: grid; gap: 28px;
+  }
+  a { color: var(--sky) }
+  :focus-visible { outline: 2px solid var(--sun); outline-offset: 3px; border-radius: 6px }
+
+  /* profile */
+  .hero { display: grid; grid-template-columns: 96px 1fr; gap: 18px; align-items: center }
+  .hero img { width: 96px; height: 96px; border-radius: 28px; object-fit: cover; border: 2px solid var(--line-strong); box-shadow: 0 0 0 6px rgba(62,198,255,.08), 0 18px 40px rgba(0,0,0,.45) }
+  .hero h1 { margin: 0; font: 800 30px/1.1 var(--lat); letter-spacing: -.02em }
+  .hero h1 span { color: var(--sky) }
+  .hero p { margin: 6px 0 0; color: var(--muted); font-size: 15px }
+  .tg {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    background: var(--sky); color: var(--ink); text-decoration: none;
+    font: 700 16px/1 var(--kh); padding: 15px 18px; border-radius: 100px;
+    box-shadow: 0 10px 30px var(--glow);
+  }
+  .tg svg { width: 20px; height: 20px; flex: none }
+  .tg b { font: 800 16px var(--lat) }
+
+  /* keyword switcher */
+  .kw-label { margin: 0 0 10px; color: var(--muted); font-size: 14px }
+  .kws { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px }
+  .kw {
+    display: grid; gap: 2px; text-align: center; text-decoration: none; color: var(--text);
+    background: var(--ink-2); border: 1px solid var(--line); border-radius: 16px; padding: 12px 6px;
+  }
+  .kw b { font: 800 15px var(--lat); letter-spacing: .02em }
+  .kw small { color: var(--muted); font-size: 12px }
+  .kw.full { border-color: var(--sun) }
+  .kw.full b { color: var(--sun) }
+  @media (max-width: 420px) { .kws { grid-template-columns: repeat(2, 1fr) } }
+
+  /* video sections */
+  .vid { background: rgba(18,27,46,.92); border: 1px solid var(--line); border-radius: 28px; padding: 22px; display: grid; gap: 16px; scroll-margin-top: 16px }
+  .vid-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px }
+  .pill { font: 700 12px/1 var(--lat); letter-spacing: .06em; text-transform: uppercase; padding: 7px 11px; border-radius: 100px; background: var(--ink-3); color: var(--sky) }
+  .pill.sun { background: var(--sun); color: var(--ink) }
+  .vid-head .count { margin-left: auto; color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums }
+  .vid h2 { margin: 0; font: 700 22px/1.45 var(--kh); text-wrap: balance }
+  .vid h2 em { font: 800 23px var(--lat); font-style: normal; color: var(--sky) }
+  .vid > p { margin: 0; color: var(--muted) }
+
+  .steps { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none }
+  .step { display: grid; grid-template-columns: 34px 1fr; gap: 12px; background: var(--ink-3); border-radius: 18px; padding: 14px }
+  .step .n { width: 34px; height: 34px; border-radius: 50%; background: var(--sky); color: var(--ink); display: grid; place-items: center; font: 800 15px var(--lat) }
+  .step div { min-width: 0 }
+  .step b { display: block; font-size: 16px; line-height: 1.5 }
+  .step span { display: block; color: var(--muted); font-size: 14.5px }
+  .step code, .tip code { font: 500 13px var(--mono); background: var(--ink); padding: 1px 6px; border-radius: 6px; color: var(--text) }
+
+  .facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px }
+  .fact { background: var(--ink); border: 1px solid var(--line); border-radius: 16px; padding: 12px }
+  .fact big { display: block; font: 800 22px/1.2 var(--lat); color: var(--sun) }
+  .fact small { color: var(--muted); font-size: 12.5px; line-height: 1.5; display: block }
+  @media (max-width: 420px) { .facts { grid-template-columns: 1fr } }
+
+  .sub { margin: 4px 0 0; font: 700 17px var(--kh) }
+  .prompts { display: grid; gap: 10px }
+  .prompt { background: var(--ink); border: 1px solid var(--line); border-left: 4px solid var(--sky); border-radius: 16px; padding: 12px 14px; display: grid; gap: 8px }
+  .prompt-top { display: flex; align-items: center; gap: 10px }
+  .prompt-top i { font: 700 12px var(--lat); font-style: normal; color: var(--sky); font-variant-numeric: tabular-nums }
+  .prompt-top b { font-size: 15px; flex: 1; min-width: 0 }
+  .prompt p { margin: 0; font: 500 13.5px/1.6 var(--mono); color: var(--text); overflow-wrap: anywhere }
+  .prompt small { color: var(--muted); font-size: 13.5px }
+  .copy { flex: none; font: 700 13px var(--kh); color: var(--sky); background: var(--ink-3); border: 1px solid var(--line-strong); border-radius: 100px; padding: 5px 12px; cursor: pointer }
+  .copy:hover { background: var(--ink-2) }
+  .copy.ok { color: var(--ink); background: var(--sun); border-color: var(--sun) }
+
+  .pdf { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; background: var(--sun); color: var(--ink); border-radius: 20px; padding: 16px 18px }
+  .pdf b { display: block; font-size: 16px }
+  .pdf span { font-size: 13.5px }
+  .pdf-link { text-decoration: none; display: inline-block; }
+  .pdf button, .pdf-link { font: 700 15px var(--kh); background: var(--ink); color: var(--sun); border: 0; border-radius: 100px; padding: 11px 18px; cursor: pointer }
+  .pdf button:disabled { opacity: .6; cursor: default }
+  .pdf .note { grid-column: 1 / -1; font-size: 13px }
+
+  .tips { margin: 0; padding-left: 20px; color: var(--muted); font-size: 14.5px; display: grid; gap: 6px }
+  .tips b { color: var(--text) }
+
+  .lock { border: 1.5px dashed var(--line-strong); border-radius: 20px; padding: 16px; display: grid; gap: 12px; background: repeating-linear-gradient(135deg, transparent 0 10px, rgba(62,198,255,.03) 10px 20px) }
+  .lock-title { display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--sun) }
+  .lock-title svg { width: 18px; height: 18px; flex: none }
+  .lock ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px }
+  .lock li { display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: center; color: var(--muted) }
+  .lock li .n { width: 34px; height: 34px; border-radius: 50%; border: 1.5px dashed var(--line-strong); display: grid; place-items: center; font: 800 15px var(--lat); color: var(--muted) }
+  .lock .tg { box-shadow: none; padding: 13px 16px; font-size: 15px }
+
+  .contact { text-align: center; display: grid; gap: 12px; justify-items: center; background: var(--ink-2); border: 1px solid var(--line-strong); border-radius: 28px; padding: 26px 22px }
+  .contact h2 { margin: 0; font: 700 22px/1.45 var(--kh); text-wrap: balance }
+  .contact p { margin: 0; color: var(--muted) }
+  .handle { display: flex; align-items: center; gap: 10px; background: var(--ink); border-radius: 100px; padding: 6px 6px 6px 16px }
+  .handle span { font: 700 16px var(--lat); user-select: all }
+  .contact .tg { width: 100% }
+  .foot { text-align: center; color: var(--muted); font-size: 13px; margin: 0 }
+
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth } }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="hero">
+    <img src="avatar.jpg" alt="រូប Sophorn">
+    <div>
+      <h1>Sophorn <span>AI</span></h1>
+      <p>ខ្ញុំចែករំលែក AI ដែលខ្ញុំប្រើពិតៗ ជាភាសាខ្មែរ។ Claude · កាត់វីដេអូ · AI clone · CapCut</p>
+    </div>
+  </header>
+
+  <a class="tg" href="https://t.me/dsophorn" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.3 18.7 19.4c-.2 1-.9 1.3-1.8.8l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.3-5 9.1-8.2c.4-.4-.1-.6-.6-.2L6.2 13.1l-4.8-1.5c-1-.3-1-1 .2-1.5L20.5 2.9c.9-.3 1.6.2 1.4 1.4Z"/></svg>
+    ផ្ញើសារមក Telegram <b>@dsophorn</b>
+  </a>
+
+  <nav aria-label="ពាក្យដែលអ្នក comment">
+    <p class="kw-label">អ្នក comment ពាក្យណា? ចុចដើម្បីលោតទៅផ្នែកនោះ</p>
+    <div class="kws">
+      <a class="kw full" href="#kling"><b>KLING</b><small>វីដេអូទី ៤ · ពេញ</small></a>
+      <a class="kw" href="#clone"><b>CLONE</b><small>វីដេអូទី ៣</small></a>
+      <a class="kw" href="#workflow"><b>WORKFLOW</b><small>វីដេអូទី ២</small></a>
+      <a class="kw" href="#ai"><b>AI</b><small>វីដេអូទី ១</small></a>
+    </div>
+  </nav>
+
+  <!-- VIDEO 4 — full -->
+  <section class="vid" id="kling">
+    <div class="vid-head"><span class="pill sun">KLING</span><span class="pill">វីដេអូទី ៤</span><span class="count">ពេញលេញ · PDF ឥតគិតថ្លៃ</span></div>
+    <h2>ធ្វើរូបថតឲ្យកម្រើកដោយ <em>Kling AI</em></h2>
+    <p>៤ ជំហាន, prompt ១០ ដែលខ្ញុំប្រើ និងគន្លឹះកុំឲ្យមុខខូច។</p>
+
+    <ol class="steps">
+      <li class="step"><span class="n">1</span><div><b>ចូល Kling AI</b><span>បើក klingai.com ហើយ Sign in ដោយ Gmail របស់អ្នក។</span></div></li>
+      <li class="step"><span class="n">2</span><div><b>ចុច Video → Image to Video</b><span>Upload រូបថតមួយសន្លឹក។ រូបមុខត្រង់ ច្បាស់ ពន្លឺភ្លឺ ចេញល្អជាងគេ។</span></div></li>
+      <li class="step"><span class="n">3</span><div><b>សរសេរ prompt ជាអង់គ្លេសខ្លីៗ</b><span>មួយសកម្មភាពក្នុងមួយវីដេអូ។ ចម្លង prompt ខាងក្រោមបាន។</span></div></li>
+      <li class="step"><span class="n">4</span><div><b>ចុច Generate</b><span>រង់ចាំប្រហែល ២ ទៅ ៣ នាទី ហើយទាញយកជា MP4។</span></div></li>
+    </ol>
+
+    <div class="facts">
+      <div class="fact"><big>5s</big><small>ប្រវែងវីដេអូមួយ (720p)</small></div>
+      <div class="fact"><big>≈50</big><small>credit ក្នុងមួយវីដេអូ ៥ វិនាទី</small></div>
+      <div class="fact"><big>Free</big><small>credit ឥតគិតថ្លៃរាល់ថ្ងៃ មាន logo តូចនៅជ្រុង</small></div>
+    </div>
+
+    <h3 class="sub">Prompt ដែលខ្ញុំប្រើ</h3>
+    <div class="prompts" id="prompts"></div>
+
+    <h3 class="sub">គន្លឹះ</h3>
+    <ul class="tips">
+      <li>សរសេរ <code>Static camera</code> ដើម្បីកុំឲ្យកាមេរ៉ារំកិល ហើយមុខរូបរាងខុស។</li>
+      <li>ដៃ និងម្រាមដៃ ត្រូវមើលឃើញច្បាស់ ឬលាក់ទាំងស្រុង។</li>
+      <li>បើមានប្រអប់ Negative Prompt ដាក់ <code>blurry, distorted face, extra fingers</code></li>
+      <li>សាក <b>720p ៥ វិនាទី</b> សិន។ ពេលពេញចិត្ត ទើបប្រើ credit ច្រើនជាងនេះ។</li>
+      <li>ប្រើតែរូបខ្លួនឯង ឬរូបដែលម្ចាស់អនុញ្ញាត ហើយដាក់ស្លាក <b>AI-generated</b> ពេល post។</li>
+    </ul>
+
+    <div class="pdf">
+      <div><b>PDF ៤ ទំព័រ ជាភាសាខ្មែរ</b><span>ជំហាន, prompt ១០ និងគន្លឹះ ទុកមើលពេលក្រោយ</span></div>
+      <a class="pdf-link" href="Sophorn-AI-Kling-Prompts.pdf" download>ទាញយក PDF</a>
+    </div>
+  </section>
+
+  <!-- VIDEO 3 — 2 of 4 -->
+  <section class="vid" id="clone">
+    <div class="vid-head"><span class="pill sun">CLONE</span><span class="pill">វីដេអូទី ៣</span><span class="count">បង្ហាញ ២ ក្នុង ៤ ជំហាន</span></div>
+    <h2>Clone ខ្លួនឯងដោយ AI ពីរូបថតតែមួយសន្លឹក</h2>
+    <p>វីដេអូទី ៣ និងទី ៤ ខ្ញុំមិនបានថតទេ។ មុខ និងសំឡេងជា AI ដែលធ្វើចេញពីខ្លួនខ្ញុំ។</p>
+    <ol class="steps">
+      <li class="step"><span class="n">1</span><div><b>ថតរូបខ្លួនឯងមួយសន្លឹក</b><span>បញ្ឈរ 9:16 មុខត្រង់ ពន្លឺភ្លឺ ផ្ទៃខាងក្រោយស្អាត។ ពាក់វ៉ែនតាបាន តែកុំឲ្យពន្លឺចាំងកញ្ចក់។ ដាក់ដៃលើតុ ឲ្យមើលឃើញច្បាស់។</span></div></li>
+      <li class="step"><span class="n">2</span><div><b>ឲ្យ Kling ធ្វើក្លីបកាយវិការ ៥ វិនាទី</b><span>ប្រើ prompt <code>01</code> ក្នុងផ្នែក KLING ខាងលើ។ ក្លីបខ្លីនេះ នឹងត្រូវវិលជុំពេញវីដេអូ ដូច្នេះចលនាតូចៗ មើលទៅធម្មជាតិជាង។</span></div></li>
+    </ol>
+    <div class="lock">
+      <div class="lock-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>ជំហាន ៣–៤ ខ្ញុំបង្ហាញតាម Telegram</div>
+      <ul>
+        <li><span class="n">3</span>Clone សំឡេងខ្មែររបស់អ្នក: កម្មវិធីដែលខ្ញុំប្រើ ថតប៉ុន្មានវិនាទី និងកំណត់អ្វីខ្លះ</li>
+        <li><span class="n">4</span>ធ្វើឲ្យមាត់និយាយតាមសំឡេង ឥតគិតថ្លៃ លើកុំព្យូទ័រខ្លួនឯង</li>
+      </ul>
+      <a class="tg" href="https://t.me/dsophorn" target="_blank" rel="noopener">ចង់បានទាំងអស់? Telegram <b>@dsophorn</b></a>
+    </div>
+  </section>
+
+  <!-- VIDEO 2 — 2 of 5 -->
+  <section class="vid" id="workflow">
+    <div class="vid-head"><span class="pill sun">WORKFLOW</span><span class="pill">វីដេអូទី ២</span><span class="count">បង្ហាញ ២ ក្នុង ៥</span></div>
+    <h2>AI workflow ៥ ដែលខ្ញុំប្រើធ្វើ content ជាខ្មែរ</h2>
+    <p>ពីមុនខ្ញុំកាត់វីដេអូមួយ ១ ម៉ោងកន្លះ ទៅ ២ ម៉ោង។ ឥឡូវ មិនដល់ ១៥ នាទី។</p>
+    <ol class="steps">
+      <li class="step"><span class="n">1</span><div><b>គំនិតវីដេអូ</b><span>ឲ្យ Claude មើល page គូប្រជែង ហើយរកវីដេអូដែលលើស views ធម្មតារបស់គេ។ យក views វីដេអូមួយ ចែកនឹង views មធ្យម (median) របស់ page។ លើស ៣ ដង គឺជាប្រធានបទដែលគួរធ្វើ។</span></div></li>
+      <li class="step"><span class="n">2</span><div><b>Hook ៣ វិនាទីដំបូង</b><span>ដាក់ hook ពីវីដេអូល្បីៗ ៥ ទៅ ១០ ឲ្យ Claude ហើយសួរថា «រកទម្រង់ដែល hook ទាំងនេះប្រើ រួចសរសេរ hook ថ្មី ៥ ជាខ្មែរ សម្រាប់ប្រធានបទ [ប្រធានបទរបស់អ្នក]»។ ជ្រើសមួយ ដែលអ្នកនិយាយទៅធម្មជាតិជាងគេ។</span></div></li>
+    </ol>
+    <div class="lock">
+      <div class="lock-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Workflow ៣–៥ ខ្ញុំបង្ហាញតាម Telegram</div>
+      <ul>
+        <li><span class="n">3</span>សំឡេង: clone សំឡេងខ្លួនឯង ឲ្យ AI អាន script ជាខ្មែរ</li>
+        <li><span class="n">4</span>រូបភាព: បង្កើត b-roll និង animation ពីអក្សរប៉ុន្មានបន្ទាត់</li>
+        <li><span class="n">5</span>កាត់វីដេអូ: Claude កាត់ និងដាក់ subtitle ខ្មែរ</li>
+      </ul>
+      <a class="tg" href="https://t.me/dsophorn" target="_blank" rel="noopener">ចង់បានទាំងអស់? Telegram <b>@dsophorn</b></a>
+    </div>
+  </section>
+
+  <!-- VIDEO 1 — 2 of 7 -->
+  <section class="vid" id="ai">
+    <div class="vid-head"><span class="pill sun">AI</span><span class="pill">វីដេអូទី ១</span><span class="count">បង្ហាញ ២ ក្នុង ៧ skill</span></div>
+    <h2>ប្រើ <em>Claude</em> រៀបចំ content strategy ឲ្យ page</h2>
+    <p>Skill ៧ ដែលដំណើរការបន្តគ្នា ពីការស្គាល់អ្នកមើល រហូតដល់ពិនិត្យ script។</p>
+    <ol class="steps">
+      <li class="step"><span class="n">1</span><div><b>សំណួរ ៦ អំពី page របស់អ្នក</b><span>ឆ្លើយឲ្យ Claude: (១) អ្នកមើលជានរណា អាយុប៉ុន្មាន នៅណា (២) ពួកគេពិបាកអ្វី (៣) ពួកគេចង់បានអ្វី (៤) អ្នកពូកែអ្វីដែលអ្នកផ្សេងគ្មាន (៥) page នេះចង់បានអ្វី: views ឬលក់ (៦) អ្នក post បានប៉ុន្មានដងក្នុងមួយសប្តាហ៍។</span></div></li>
+      <li class="step"><span class="n">2</span><div><b>មើល page គូប្រជែង</b><span>ឲ្យ Claude ប្រៀបធៀប views វីដេអូនីមួយ ជាមួយ views មធ្យមរបស់ page នោះ។ Page មួយដែលខ្ញុំសិក្សា វីដេអូល្អបំផុតខ្លាំងជាងធម្មតាជិត ៣០០ ដង។ វីដេអូបែបនេះ ប្រាប់អ្នកថាប្រធានបទណាដែលអ្នកមើលចង់បាន។</span></div></li>
+    </ol>
+    <div class="lock">
+      <div class="lock-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Skill ៣–៧ ខ្ញុំបង្ហាញតាម Telegram</div>
+      <ul>
+        <li><span class="n">3</span>ផែនទីរកកន្លែងដែលគ្មាននរណាធ្វើ</li>
+        <li><span class="n">4</span>ចែកប្រធានបទ ពីទូលាយ ដល់ចង្អៀត</li>
+        <li><span class="n">5</span>បញ្ជីគំនិតវីដេអូ ដែលមានភស្តុតាងថាដំណើរការ</li>
+        <li><span class="n">6</span>ម៉ាស៊ីនសរសេរ hook</li>
+        <li><span class="n">7</span>គ្រូពិនិត្យ script</li>
+      </ul>
+      <a class="tg" href="https://t.me/dsophorn" target="_blank" rel="noopener">ចង់បានទាំងអស់? Telegram <b>@dsophorn</b></a>
+    </div>
+  </section>
+
+  <section class="contact">
+    <h2>ចង់បានមេរៀនពេញ ឬឲ្យខ្ញុំដំឡើង AI workflow ឲ្យ?</h2>
+    <p>ផ្ញើសារមក Telegram ប្រាប់ពាក្យដែលអ្នក comment ខ្ញុំឆ្លើយផ្ទាល់។</p>
+    <div class="handle"><span id="handle">@dsophorn</span><button type="button" class="copy" id="copy-handle">ចម្លង</button></div>
+    <a class="tg" href="https://t.me/dsophorn" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.3 18.7 19.4c-.2 1-.9 1.3-1.8.8l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.3-5 9.1-8.2c.4-.4-.1-.6-.6-.2L6.2 13.1l-4.8-1.5c-1-.3-1-1 .2-1.5L20.5 2.9c.9-.3 1.6.2 1.4 1.4Z"/></svg>
+      បើក Telegram
+    </a>
+  </section>
+
+  <p class="foot">Sophorn AI · មុខ និងសំឡេងក្នុងវីដេអូទី ៣–៤ ជា AI clone របស់ខ្ញុំផ្ទាល់</p>
+</div>
+
+<script>
+  const PROMPTS = [
+    ["និយាយមុខកាមេរ៉ា (ធ្វើ clone)", "The man looks at the camera and talks naturally with small hand gestures. He blinks and moves his head slightly. Static camera, realistic.", "ប្តូរ The man ទៅ The woman បើជាស្រី។"],
+    ["ញញឹម ហើយគ្រវីដៃ", "The person smiles and waves at the camera, then lowers the hand. Natural motion, static camera.", "ល្អសម្រាប់ចាប់ផ្តើមវីដេអូ ឬ end card។"],
+    ["ចង្អុលទៅលើ (សម្រាប់ដាក់អក្សរ)", "The person points up with one hand and smiles, as if showing something above. Static camera.", "ទុកកន្លែងខាងលើ ដាក់ចំណងជើងក្នុង CapCut។"],
+    ["រូបគ្រួសារចាស់ៗ", "The people in the photo smile gently and blink. Very subtle, natural movement. Keep their faces exactly the same.", "សូមការអនុញ្ញាតពីគ្រួសារ មុនបង្ហោះ។"],
+    ["ម៉ូដែលបង្ហាញសម្លៀកបំពាក់", "The model turns slowly to show the outfit. The fabric moves naturally. Static camera, soft studio light.", "សម្រាប់ហាងលក់ខោអាវ។"],
+    ["ទំនិញលើតុ", "The camera slowly pushes in on the product. Soft light reflections move across it. Smooth motion, no distortion.", "កាបូប ទឹកអប់ ទូរស័ព្ទ ..."],
+    ["កាហ្វេ ឬម្ហូបក្តៅ", "Steam rises from the hot coffee. The camera slowly moves closer. Warm cafe light, cinematic.", "សម្រាប់ menu ហាងកាហ្វេ និងភោជនីយដ្ឋាន។"],
+    ["ខាងក្នុងហាង", "The camera slowly moves forward through the shop. Gentle light, people move naturally in the background.", "B-roll ដែលមិនបានថតផ្ទាល់។"],
+    ["សត្វចិញ្ចឹម", "The cat looks around, blinks and slowly moves its tail. Natural motion, static camera.", "ប្តូរ cat ទៅ dog តាមរូបរបស់អ្នក។"],
+    ["ទេសភាព", "Clouds move slowly across the sky and the trees sway in the wind. Slow camera pan, cinematic.", "សម្រាប់ផ្ទៃខាងក្រោយ ឬប្តូរឈុត។"]
+  ];
+
+  function copyText(text, btn) {
+    const done = () => { btn.textContent = "បានចម្លង"; btn.classList.add("ok"); setTimeout(() => { btn.textContent = "ចម្លង"; btn.classList.remove("ok"); }, 1600); };
+    const fallback = () => {
+      const target = btn.parentElement.querySelector("p, span");
+      if (!target) return;
+      const r = document.createRange(); r.selectNodeContents(target);
+      const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+      btn.textContent = "បានជ្រើស · ចុច Copy";
+    };
+    try { navigator.clipboard.writeText(text).then(done, fallback); } catch (e) { fallback(); }
+  }
+
+  const list = document.getElementById("prompts");
+  PROMPTS.forEach(([name, text, use], i) => {
+    const el = document.createElement("div");
+    el.className = "prompt";
+    el.innerHTML = '<div class="prompt-top"><i></i><b></b><button type="button" class="copy">ចម្លង</button></div><p></p><small></small>';
+    el.querySelector("i").textContent = String(i + 1).padStart(2, "0");
+    el.querySelector("b").textContent = name;
+    el.querySelector("p").textContent = text;
+    el.querySelector("small").textContent = use;
+    const btn = el.querySelector(".copy");
+    btn.addEventListener("click", () => {
+      try { navigator.clipboard.writeText(text).then(
+        () => { btn.textContent = "បានចម្លង"; btn.classList.add("ok"); setTimeout(() => { btn.textContent = "ចម្លង"; btn.classList.remove("ok"); }, 1600); },
+        () => selectIn(el.querySelector("p"), btn)); } catch (e) { selectIn(el.querySelector("p"), btn); }
+    });
+    list.appendChild(el);
+  });
+  function selectIn(node, btn) {
+    const r = document.createRange(); r.selectNodeContents(node);
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+    btn.textContent = "បានជ្រើស · ចុច Copy";
+  }
+
+  document.getElementById("copy-handle").addEventListener("click", e => copyText("@dsophorn", e.currentTarget));
+
+</script>
+
+</body>
+</html>
