@@ -62,7 +62,9 @@
 
   /* keyword switcher */
   .kw-label { margin: 0 0 10px; color: var(--muted); font-size: 14px }
-  .kws { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px }
+  .kws { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px }
+  .kws .kw { grid-column: span 2 }
+  .kws .kw:nth-child(n+4) { grid-column: span 3 }
   .kw {
     display: grid; gap: 2px; text-align: center; text-decoration: none; color: var(--text);
     background: var(--ink-2); border: 1px solid var(--line); border-radius: 16px; padding: 12px 6px;
@@ -71,7 +73,7 @@
   .kw small { color: var(--muted); font-size: 12px }
   .kw.full { border-color: var(--sun) }
   .kw.full b { color: var(--sun) }
-  @media (max-width: 420px) { .kws { grid-template-columns: repeat(2, 1fr) } }
+  @media (max-width: 420px) { .kws { grid-template-columns: repeat(2, 1fr) } .kws .kw, .kws .kw:nth-child(n+4) { grid-column: auto } .kws .kw:first-child { grid-column: span 2 } }
 
   /* video sections */
   .vid { background: rgba(18,27,46,.92); border: 1px solid var(--line); border-radius: 28px; padding: 22px; display: grid; gap: 16px; scroll-margin-top: 16px }
@@ -159,12 +161,33 @@
   <nav aria-label="ពាក្យដែលអ្នក comment">
     <p class="kw-label">អ្នក comment ពាក្យណា? ចុចដើម្បីលោតទៅផ្នែកនោះ</p>
     <div class="kws">
+      <a class="kw" href="#team"><b>TEAM</b><small>វីដេអូទី ៥</small></a>
       <a class="kw full" href="#kling"><b>KLING</b><small>វីដេអូទី ៤ · ពេញ</small></a>
       <a class="kw" href="#clone"><b>CLONE</b><small>វីដេអូទី ៣</small></a>
       <a class="kw" href="#workflow"><b>WORKFLOW</b><small>វីដេអូទី ២</small></a>
       <a class="kw" href="#ai"><b>AI</b><small>វីដេអូទី ១</small></a>
     </div>
   </nav>
+
+  <!-- VIDEO 5 — 2 of 5 -->
+  <section class="vid" id="team">
+    <div class="vid-head"><span class="pill sun">TEAM</span><span class="pill">វីដេអូទី ៥</span><span class="count">បង្ហាញ ២ ក្នុង ៥ សមាជិក</span></div>
+    <h2>ក្រុម <em>AI</em> ៥ នាក់ ដែលធ្វើការងារ page ខ្ញុំ</h2>
+    <p>សមាជិកនីមួយៗ មានការងារតែមួយ។ ខ្ញុំគ្រាន់តែពិនិត្យ ហើយចុចយល់ព្រម។</p>
+    <ol class="steps">
+      <li class="step"><span class="n">1</span><div><b>អ្នកស្រាវជ្រាវ</b><span>ឲ្យ Claude មើល page គូប្រជែង ៣ ទៅ ៥។ ចែក views វីដេអូនីមួយ នឹង views មធ្យម (median) របស់ page នោះ។ វីដេអូណាលើស ៣ ដង គឺជាប្រធានបទដែលអ្នកមើលកំពុងចង់បាន។</span></div></li>
+      <li class="step"><span class="n">2</span><div><b>អ្នកសរសេរ script</b><span>ដាក់ប្រធានបទនោះ និង hook ល្បីៗ ៥ ឲ្យ Claude ហើយសួរថា «សរសេរ hook ៥ និង script ៤០ វិនាទី ជាខ្មែរ និយាយដូចមនុស្សពិត មួយប្រយោគខ្លីៗ»។ អានឮៗ ហើយកែពាក្យដែលអ្នកមិនដែលនិយាយ។</span></div></li>
+    </ol>
+    <div class="lock">
+      <div class="lock-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>សមាជិក ៣–៥ ខ្ញុំបង្ហាញតាម Telegram</div>
+      <ul>
+        <li><span class="n">3</span>តួសម្តែង: AI clone មុខ និងសំឡេងខ្មែររបស់អ្នក</li>
+        <li><span class="n">4</span>អ្នកកាត់ត: Claude កាត់វីដេអូ និងដាក់ subtitle ខ្មែរ ក្នុង CapCut</li>
+        <li><span class="n">5</span>អ្នកឆ្លើយសារ: ពេលមាននរណា comment វាផ្ញើ link ទៅ inbox ឲ្យ ហើយអ្នកចុចយល់ព្រម</li>
+      </ul>
+      <a class="tg" href="https://t.me/dsophorn" target="_blank" rel="noopener">ចង់បានទាំងអស់? Telegram <b>@dsophorn</b></a>
+    </div>
+  </section>
 
   <!-- VIDEO 4 — full -->
   <section class="vid" id="kling">
@@ -274,7 +297,7 @@
     </a>
   </section>
 
-  <p class="foot">Sophorn AI · មុខ និងសំឡេងក្នុងវីដេអូទី ៣–៤ ជា AI clone របស់ខ្ញុំផ្ទាល់</p>
+  <p class="foot">Sophorn AI · មុខ និងសំឡេងក្នុងវីដេអូទី ៣–៥ ជា AI clone របស់ខ្ញុំផ្ទាល់</p>
 </div>
 
 <script>
