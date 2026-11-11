@@ -62,8 +62,7 @@
 
   /* keyword switcher */
   .kw-label { margin: 0 0 10px; color: var(--muted); font-size: 14px }
-  .kws { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px }
-  .kws .kw { grid-column: span 2 }
+  .kws { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px }
   .kw {
     display: grid; gap: 2px; text-align: center; text-decoration: none; color: var(--text);
     background: var(--ink-2); border: 1px solid var(--line); border-radius: 16px; padding: 12px 6px;
@@ -158,6 +157,8 @@
   <nav aria-label="ពាក្យដែលអ្នក comment">
     <p class="kw-label">អ្នក comment ពាក្យណា? ចុចដើម្បីលោតទៅផ្នែកនោះ</p>
     <div class="kws">
+      <a class="kw" href="#lesson"><b>Lesson</b><small>វីដេអូទី ៨</small></a>
+      <a class="kw" href="#claude"><b>Claude</b><small>វីដេអូទី ៧</small></a>
       <a class="kw" href="#capcut"><b>CapCut</b><small>វីដេអូទី ៦</small></a>
       <a class="kw" href="#team"><b>TEAM</b><small>វីដេអូទី ៥</small></a>
       <a class="kw" href="#kling"><b>KLING</b><small>វីដេអូទី ៤ · ពេញ</small></a>
@@ -166,6 +167,46 @@
       <a class="kw" href="#ai"><b>AI</b><small>វីដេអូទី ១</small></a>
     </div>
   </nav>
+
+  <!-- VIDEO 8 — 2 of 5 -->
+  <section class="vid" id="lesson">
+    <div class="vid-head"><span class="pill sun">Lesson</span><span class="pill">វីដេអូទី ៨</span><span class="count">បង្ហាញ ២ ក្នុង ៥ មេរៀន</span></div>
+    <h2>ធ្វើ <em>AI</em> ឲ្យក្លាយជាជំនួយការរបស់អ្នក</h2>
+    <p>AI ដែលខ្ញុំប្រើរាល់ថ្ងៃ: ខ្ញុំផ្ញើសារពីទូរសព្ទ ហើយវាធ្វើការងារលើកុំព្យូទ័រជំនួសខ្ញុំ។</p>
+    <ol class="steps">
+      <li class="step"><span class="n">1</span><div><b>ប្រាប់ AI ថាអ្នកជានរណា</b><span>ខ្ញុំប្រើ Claude។ សរសេរកំណត់ត្រាមួយប្រាប់វាថា អ្នកធ្វើការងារអ្វី មាន page អ្វីខ្លះ និងចូលចិត្តសរសេរបែបណា។ Claude អានវារាល់ពេល ដូច្នេះអ្នកមិនបាច់ពន្យល់ម្តងហើយម្តងទៀតទេ។</span></div></li>
+      <li class="step"><span class="n">2</span><div><b>បញ្ជាវាពី Telegram</b><span>ភ្ជាប់ Claude ជាមួយ Telegram។ ពេលនៅក្រៅផ្ទះ គ្រាន់តែផ្ញើសារ ឧ. «ពិនិត្យ comment ថ្មីៗ» វាធ្វើលើកុំព្យូទ័រ ហើយផ្ញើមកប្រាប់វិញថា ធ្វើរួចហើយ។</span></div></li>
+    </ol>
+    <div class="lock">
+      <div class="lock-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>មេរៀន ៣–៥ ខ្ញុំបង្ហាញតាម Telegram</div>
+      <ul>
+        <li><span class="n">3</span>ឲ្យ AI កាត់វីដេអូ និងស្រាវជ្រាវ content ជំនួស</li>
+        <li><span class="n">4</span>Post វីដេអូ ឆ្លើយ comment និងផ្ញើសារដោយស្វ័យប្រវត្តិ</li>
+        <li><span class="n">5</span>កំណត់ម៉ោង ឲ្យវាធ្វើការងារទាំងនេះរៀងរាល់ថ្ងៃ</li>
+      </ul>
+      <a class="tg" href="https://t.me/dsophorn" target="_blank" rel="noopener">ចង់រៀនទាំងអស់? Telegram <b>@dsophorn</b></a>
+    </div>
+  </section>
+
+  <!-- VIDEO 7 — 2 of 5 -->
+  <section class="vid" id="claude">
+    <div class="vid-head"><span class="pill sun">Claude</span><span class="pill">វីដេអូទី ៧</span><span class="count">បង្ហាញ ២ ក្នុង ៥ ជំហាន</span></div>
+    <h2><em>AI Auto Editing</em> ពី ០ ដល់ ១០០ ដោយ prompt តែមួយ</h2>
+    <p>Project ដែលខ្ញុំប្រើកាត់វីដេអូរបស់ខ្ញុំ: Claude Code កាត់ ហើយដាក់ចូល CapCut ឲ្យ ក្នុង ១៥–២០ នាទី ជំនួស ២ ម៉ោង។</p>
+    <ol class="steps">
+      <li class="step"><span class="n">1</span><div><b>ដាក់ folder ឲ្យ Claude Code</b><span>ដាក់ clip ទាំងអស់ដែលអ្នកថត ក្នុង folder តែមួយ (ឧ. <code>project</code>) ហើយអូស folder នោះទៅដាក់ក្នុង Claude Code។</span></div></li>
+      <li class="step"><span class="n">2</span><div><b>វាយ prompt តែមួយ</b><span>វាយ <code>start on this video with template</code> ហើយចុច Enter។ រើស style ដែលចង់បាន: Template, Tracking, Liquid Glass, Before/After ឬ KL style។</span></div></li>
+    </ol>
+    <div class="lock">
+      <div class="lock-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>ជំហាន ៣–៥ និង project ខ្ញុំផ្ញើតាម Telegram</div>
+      <ul>
+        <li><span class="n">3</span>AI កាត់សំឡេងស្ងាត់ កាត់ប្រយោគស្ទួន ហើយដាក់ B-roll</li>
+        <li><span class="n">4</span>Style «Sophorn»: AI clone មុខ និង clone សំឡេង</li>
+        <li><span class="n">5</span>បើក CapCut ពិនិត្យ កែបន្ថែម ហើយ export</li>
+      </ul>
+      <a class="tg" href="https://t.me/dsophorn" target="_blank" rel="noopener">ចង់បាន project? Telegram <b>@dsophorn</b></a>
+    </div>
+  </section>
 
   <!-- VIDEO 6 — 2 of 5 -->
   <section class="vid" id="capcut">
